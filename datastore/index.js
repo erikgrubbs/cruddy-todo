@@ -22,9 +22,9 @@ exports.create = (text, callback) => {
 
 exports.readAll = (callback) => {
   fs.readdir(exports.dataDir, (err, items) => {
-    var data = _.map(items, (item) => {
-      item = item.split('.')[0];
-      return { id: item, text: item };
+    var data = _.map(items, (text) => {
+      text = text.split('.')[0];
+      return { id: text, text};
     });
     callback(null, data);
   });
@@ -46,11 +46,11 @@ exports.readOne = (id, callback) => {
 
 exports.update = (id, text, callback) => {
   const filePath = exports.dataDir + '/' + id + '.txt';
-  exports.readOne(id, (err) => {
+  fs.access(filePath, (err) => {
     if (err) {
       callback(err);
     } else {
-      fs.writeFile(filePath, text, (err, text) => {
+      fs.writeFile(filePath, text, (err) => {
         if (err) {
           callback(err);
         } else {
