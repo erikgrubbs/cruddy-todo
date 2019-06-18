@@ -24,16 +24,16 @@ exports.readAll = (callback) => {
   var readFileAsync = Promise.promisify(fs.readFile);
 
   fs.readdir(exports.dataDir, (err, fileNames) => {
-    var data = _.map(fileNames, (id) => {
+    var readFilePromises = _.map(fileNames, (id) => {
       return readFileAsync(exports.dataDir + '/' + id)
         .then((text) => {
           id = id.split('.')[0];
           return { id, text: text.toString() };
         });
     });
-    Promise.all(data) // this returns todo1, todo2
-      .then(function (value) {
-        callback(null, value);
+    Promise.all(readFilePromises)
+      .then(function (todos) {
+        callback(null, todos);
       });
   });
 
